@@ -1,0 +1,21 @@
+{
+  "name": "html-synthesizer",
+  "version": "0.0.1",
+  "description": "Synthesizes html dataset.",
+  "main": "src/index.mjs",
+  "scripts": {
+    "start": "nodemon --experimental-modules src/index.mjs",
+    "debug": "nodemon —-inspect --experimental-modules src/index.mjs",
+    "test": "mocha ./src/token.test.mjs"
+  },
+  "author": "Povilas Simanaitis",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "mocha": "^7.0.0-esm1",
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {}
+}
