@@ -6,14 +6,15 @@
   "scripts": {
     "start": "nodemon --experimental-modules src/index.mjs",
     "debug": "nodemon —-inspect --experimental-modules src/index.mjs",
-    "test": "mocha ./src/token.test.mjs"
+    "test": "mocha --experimental-modules ./src/token.test.mjs"
   },
   "author": "Povilas Simanaitis",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^6.1.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint": "^5.16.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
     "mocha": "^7.0.0-esm1",
     "nodemon": "^2.0.2"
   },

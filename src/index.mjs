@@ -1,3 +1,5 @@
-import { generateTokens } from "./token.mjs";
+import {generateTokens} from './token.mjs';
 
-console.log(generateTokens());
+console.log(generateTokens({
+  div: [{'display': ['flex'], 'flex-direction': ['row', 'collumn']}],
+}));
