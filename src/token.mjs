@@ -17,16 +17,26 @@ export const getAllTags = (tokenList)=>{
       .filter((item) => item !== openingTag && item !== clostingTag && item !== closingOpeningPart)
       .reduce((acc, item)=>({...acc, [item.split(':')[0]]: [...(acc[item.split(':')[0]] ? acc[item.split(':')[0]] : []), item]}), {});
 
-  return expandWithAll(Object.values(uniqueKeys), (data)=>data)
-      .map((stylePart)=> ((content)=>`${openingTag}${stylePart}${closingOpeningPart}${content}${clostingTag}`));
+  return expandWithAll(Object.values(uniqueKeys), (data)=>data, (data)=>data)
+      .map((stylePart)=> ((content)=>`${stylePart}`));
+      // .map((stylePart)=> ((content)=>`${openingTag}${stylePart}${closingOpeningPart}${content}${clostingTag}`));
 };
 
-const expandWithAll = (collections, content)=>{
+const expandWithAll = (collections, content, initialContent)=>{
   if (collections.length === 1) {
-    return collections[0].map(content);
+    return [
+      ...collections[0].map(content),
+      ...collections[0].map(initialContent),
+    ];
   } else {
-    return collections[0].map((item)=>expandWithAll(collections.slice(1, collections.length), (data)=>
-      `${item} ${data}`
-    )).flat();
+    return collections[0].map((item)=>
+      [
+        ...expandWithAll(collections.slice(1, collections.length), (data)=>
+          content(`${item} ${data}`)
+        , (data)=>`${item} ${data}`),
+        initialContent(item),
+      ]
+
+    ).flat();
   }
 };

@@ -11,6 +11,7 @@
   "author": "Povilas Simanaitis",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.20.1",
