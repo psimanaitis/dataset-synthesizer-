@@ -1,3 +1,5 @@
+import bigCartesian from 'big-cartesian';
+
 export const generateTokens = (tokens) => Object.keys(tokens).reduce((acc, key) => {
   acc.push(`<${key} style="`);
   tokens[key].forEach((item) => {
@@ -16,27 +18,17 @@ export const getAllTags = (tokenList)=>{
   const uniqueKeys = tokenList
       .filter((item) => item !== openingTag && item !== clostingTag && item !== closingOpeningPart)
       .reduce((acc, item)=>({...acc, [item.split(':')[0]]: [...(acc[item.split(':')[0]] ? acc[item.split(':')[0]] : []), item]}), {});
-
-  return expandWithAll(Object.values(uniqueKeys), (data)=>data, (data)=>data)
-      .map((stylePart)=> ((content)=>`${stylePart}`));
-      // .map((stylePart)=> ((content)=>`${openingTag}${stylePart}${closingOpeningPart}${content}${clostingTag}`));
+  return [...expandWithAll(Object.values(uniqueKeys)).map((items)=>items.join(' '))];
 };
 
-const expandWithAll = (collections, content, initialContent)=>{
+// TODO calculate cardesian sums for every unique combinations [a,b] [a, c] [b, c] dont do for [b, a] [c, a] [c,b]
+const expandWithAll = (collections)=>{
   if (collections.length === 1) {
-    return [
-      ...collections[0].map(content),
-      ...collections[0].map(initialContent),
-    ];
+    return bigCartesian(collections);
   } else {
-    return collections[0].map((item)=>
-      [
-        ...expandWithAll(collections.slice(1, collections.length), (data)=>
-          content(`${item} ${data}`)
-        , (data)=>`${item} ${data}`),
-        initialContent(item),
-      ]
-
-    ).flat();
+    return [
+      ...bigCartesian(collections),
+      ...expandWithAll(collections.slice(0, collections.length-1)),
+    ];
   }
 };

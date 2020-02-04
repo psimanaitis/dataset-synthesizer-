@@ -62,9 +62,10 @@ describe('token', () => {
       'd:h; j:l',
       'j:k',
       'j:l',
-    ];
+    ].sort((a, b) => a.length - b.length);
 
-    const result = getAllTags(generateTokens(tokensConfiguration)).map((item)=>item(''));
+    const result = getAllTags(generateTokens(tokensConfiguration))
+        .sort((a, b) => a.length - b.length);
 
     assert.sameMembers(result, expectedResults, 'sameMember');
   });

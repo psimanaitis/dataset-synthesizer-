@@ -20,5 +20,7 @@
     "mocha": "^7.0.0-esm1",
     "nodemon": "^2.0.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "big-cartesian": "^2.0.0"
+  }
 }
