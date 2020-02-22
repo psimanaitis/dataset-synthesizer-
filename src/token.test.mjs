@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-import {generateTokens, getAllTags} from './token.mjs';
+import {generateTokens, getAllTagsReworked} from './token.mjs';
 import 'mjs-mocha';
 
 const {assert} = chai.default;
@@ -64,8 +64,8 @@ describe('token', () => {
       '<div style="j:l;"></div>',
     ];
 
-    const result = getAllTags(generateTokens(tokensConfiguration))
-        .map(callback => callback(''));
+    const result = getAllTagsReworked(tokensConfiguration)
+        .map((callback) => callback(''));
 
     assert.sameMembers(result, expectedResults, 'sameMember');
   });

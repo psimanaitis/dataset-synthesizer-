@@ -23,5 +23,8 @@
   "dependencies": {
     "big-cartesian": "^2.0.0",
     "puppeteer": "^2.1.1"
+  },
+  "engines": {
+    "node": ">=13.7.0"
   }
 }
