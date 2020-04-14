@@ -48,9 +48,7 @@ const standardBlock = {
         }],
 };
 
-const blockContentConfig = {
-    strong: [],
-    span: [],
+const contentButtonConfig = {
     button: [{
         'color': ['white'],
         'background': ['#4dab4c', '#f0a223', '#cf3f37'],
@@ -61,9 +59,16 @@ const blockContentConfig = {
         'border': ['none'],
     }],
 };
+const contentStrongConfig = {
+    strong: [{'margin': ['5px']}],
+};
+
+const contentSpanConfig = {
+    span: [{'margin': ['5px']}],
+};
 
 const contentContainer = {
-    main: [
+    body: [
         {
             'display': ['grid'],
             'grid-template-columns': ['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)'],
@@ -83,19 +88,40 @@ const generetatePixCodeElements = () => ({
     headerElements: [...getAllTagsReworked(headerElementActive).filter(containsEachKey(headerElementActive)), ...getAllTagsReworked(headerElementActiveInactive).filter(containsEachKey(headerElementActiveInactive))],
     contentContainer: getAllTagsReworked(contentContainer).filter(containsEachKey(contentContainer)),
     standardBlock: getAllTagsReworked(standardBlock).filter(containsEachKey(standardBlock)),
-    blockContent: getAllTagsReworked(blockContentConfig).filter(containsEachKey(blockContentConfig)),
+    contentButton: getAllTagsReworked(contentButtonConfig).filter(containsEachKey(contentButtonConfig)),
+    contentStrong: getAllTagsReworked(contentStrongConfig).filter(containsEachKey(contentStrongConfig)),
+    contentSpan: getAllTagsReworked(contentSpanConfig).filter(containsEachKey(contentSpanConfig)),
 });
 
+const commonText = () => randomWords({ min: 1, max: 3, maxLength: 5, join:' ' });
+
 const main = () => {
-    const { headerContainer, headerElements, contentContainer, standardBlock, blockContent } = generetatePixCodeElements();
-    console.log(getHeaderContent(headerContainer, headerElements));
+    const { headerContainer, headerElements, standardBlock, contentContainer, contentButton, contentStrong, contentSpan } = generetatePixCodeElements();
+
+    //9 arrangements with multiple possible amount of children
+    console.log(contentContainer.length);
+
+    //3 standard block
+    const standarBlocks = contentButton.map(buttonFn=>({
+        contentFn: standardBlock,
+        children:[
+            {contentFn: contentStrong, children: {contentFn: commonText}},
+            {contentFn: contentSpan, children: {contentFn: commonText}},
+            {contentFn: buttonFn, children: {contentFn: commonText}},
+        ]
+    }));
+
+    //14 different headers
+    const headers = getHeaderButtons(headerElements).map(headerButtons=>({
+        contenFn: headerContainer, children:  headerButtons.map(buttonFn => ({contentFn: buttonFn, children: {contentFn: commonText}}))
+    }));
+
+    // console.log(getAllTagsReworked(getAllTagsReworked(blockContentConfig).filter(containsEachKey(blockContentConfig))));
+    // console.log(getHeaderContent(headerContainer, headerElements));
 };
 
 //Hardcoded stuff that makes people go to hell
-const getHeaderContent = (headerContainer, headerElements) =>{
-    const activeButton = headerElements[0];
-    const inActiveButton = headerElements[1];
-    const headerContent = [
+const getHeaderButtons = ([activeButton, inActiveButton]) => [
         [activeButton, inActiveButton],
         [inActiveButton, activeButton],
         [activeButton, inActiveButton, inActiveButton],
@@ -111,15 +137,5 @@ const getHeaderContent = (headerContainer, headerElements) =>{
         [inActiveButton, inActiveButton, inActiveButton, activeButton, inActiveButton],
         [inActiveButton, inActiveButton, inActiveButton, inActiveButton, activeButton],
     ];
-
-    return headerContent
-        .map(headerItems =>
-            headerContainer.map(content => content(
-                headerItems.map(buttonFn =>
-                    buttonFn(randomWords({ min: 1, max: 3, maxLength: 5, join:' ' }))
-                ).join('')
-            ))
-        );
-};
 
 main();

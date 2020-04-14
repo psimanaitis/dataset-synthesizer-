@@ -22,6 +22,21 @@ describe('token', () => {
     assert.sameMembers(result, expectedResults, 'sameMember');
   });
 
+  it('generateTokens generates list of all with single value tokens', () => {
+    const tokensConfiguration = {
+      strong: [{'margin': ['5px']}],
+    };
+    const expectedResults = [
+      '">',
+      '<strong style="',
+      'margin:5px;',
+      '</strong>',
+    ];
+
+    const result = generateTokens(tokensConfiguration);
+    assert.sameMembers(result, expectedResults, 'sameMember');
+  });
+
   it('generateTokens generates list of all posible html tags', () => {
     const tokensConfiguration = {
       div: [

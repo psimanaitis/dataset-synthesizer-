@@ -26,7 +26,7 @@ const getAllTags = (tokenList)=>{
       .filter((item) => item !== openingTag && item !== clostingTag && item !== closingOpeningPart)
       .reduce((acc, item)=>({...acc, [item.split(':')[0]]: [...(acc[item.split(':')[0]] ? acc[item.split(':')[0]] : []), item]}), {});
   if (Object.keys(uniqueKeys).length) {
-    return Array.from(new Set([...expandWithAll(Object.values(uniqueKeys)).map((items)=>items.join(' '))]))
+    return Array.from(new Set([...expandWithAll(Object.values(uniqueKeys))].map((items)=>items.join(' '))))
         .map((stylePart)=> ((content)=>`${openingTag}${stylePart}${closingOpeningPart}${content}${clostingTag}`));
   } else {
     return [(content)=>`${openingTag}${closingOpeningPart}${content}${clostingTag}`];
