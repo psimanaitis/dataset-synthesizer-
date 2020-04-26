@@ -1,5 +1,7 @@
 import {getAllTagsReworked} from './token.mjs';
 import randomWords from 'random-words';
+import {generateContent} from "./tree2html.mjs";
+import { promises as fs } from 'fs';
 
 const headerContainer = {
     header: [
@@ -36,18 +38,6 @@ const headerElementActiveInactive = {
 };
 
 
-const standardBlock = {
-    div: [
-        {
-            'background-color': ['#f5f5f5'],
-            'border-radius': ['4px'],
-            'padding': ['5px'],
-            'display': ['flex'],
-            'flex-direction': ['column'],
-            'justify-content': ['space-around'],
-        }],
-};
-
 const contentButtonConfig = {
     button: [{
         'color': ['white'],
@@ -68,12 +58,12 @@ const contentSpanConfig = {
 };
 
 const contentContainer = {
-    body: [
+    div: [
         {
             'display': ['grid'],
-            'grid-template-columns': ['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)'],
+            'grid-template-columns': ['repeat(4, 1fr)'],
             'gap': ['10px'],
-            'grid-template-rows': ['repeat(1, 120px)', 'repeat(2, 120px)', 'repeat(3, 120px)'],
+            'grid-template-rows': ['repeat(3, 120px)'],
         }],
 };
 
@@ -87,7 +77,6 @@ const generetatePixCodeElements = () => ({
     headerContainer: getAllTagsReworked(headerContainer).filter(containsEachKey(headerContainer)),
     headerElements: [...getAllTagsReworked(headerElementActive).filter(containsEachKey(headerElementActive)), ...getAllTagsReworked(headerElementActiveInactive).filter(containsEachKey(headerElementActiveInactive))],
     contentContainer: getAllTagsReworked(contentContainer).filter(containsEachKey(contentContainer)),
-    standardBlock: getAllTagsReworked(standardBlock).filter(containsEachKey(standardBlock)),
     contentButton: getAllTagsReworked(contentButtonConfig).filter(containsEachKey(contentButtonConfig)),
     contentStrong: getAllTagsReworked(contentStrongConfig).filter(containsEachKey(contentStrongConfig)),
     contentSpan: getAllTagsReworked(contentSpanConfig).filter(containsEachKey(contentSpanConfig)),
@@ -95,29 +84,80 @@ const generetatePixCodeElements = () => ({
 
 const commonText = () => randomWords({ min: 1, max: 3, maxLength: 5, join:' ' });
 
-const main = () => {
-    const { headerContainer, headerElements, standardBlock, contentContainer, contentButton, contentStrong, contentSpan } = generetatePixCodeElements();
+const getStandarBlock = row =>({
+    'background-color': ['#f5f5f5'],
+    'grid-row': [row],
+    'border-radius': ['4px'],
+    'padding': ['5px'],
+    'display': ['flex'],
+    'flex-direction': ['column'],
+    'justify-content': ['space-around'],
+});
 
-    //9 arrangements with multiple possible amount of children
-    console.log(contentContainer.length);
+const uno = row => [
+    {div: [{...getStandarBlock(row), 'grid-column' : ['1/5']}]},
+];
 
-    //3 standard block
-    const standarBlocks = contentButton.map(buttonFn=>({
-        contentFn: standardBlock,
-        children:[
-            {contentFn: contentStrong, children: {contentFn: commonText}},
-            {contentFn: contentSpan, children: {contentFn: commonText}},
-            {contentFn: buttonFn, children: {contentFn: commonText}},
-        ]
-    }));
+const dos = row => [
+    {div: [{...getStandarBlock(row), 'grid-column' : ['1/3']}]},
+    {div: [{...getStandarBlock(row), 'grid-column' : ['3/5']}]},
+];
 
-    //14 different headers
+const cuatro = row => [
+    {div: [{...getStandarBlock(row)}]},
+    {div: [{...getStandarBlock(row)}]},
+    {div: [{...getStandarBlock(row)}]},
+    {div: [{...getStandarBlock(row)}]},
+];
+
+const randomButton = ()=>Math.floor(Math.random() * 3);
+
+const getCombinationChildren = (contentStrong, contentSpan, contentButton) => (row, rowIndex) =>
+    row(rowIndex).map(
+        config => ({
+                contentFn: getAllTagsReworked(config).filter(containsEachKey(config))[0],
+                children: [
+                    { contentFn: contentStrong[0], children: [{ contentFn: commonText }] },
+                    { contentFn: contentSpan[0], children: [{ contentFn: commonText }] },
+                    { contentFn: contentButton[randomButton()], children: [{ contentFn: commonText }] },
+                ]
+            })
+    ).flat();
+
+
+const main = async () => {
+    const { headerContainer, headerElements, contentContainer, contentButton, contentStrong, contentSpan } = generetatePixCodeElements();
+
     const headers = getHeaderButtons(headerElements).map(headerButtons=>({
-        contenFn: headerContainer, children:  headerButtons.map(buttonFn => ({contentFn: buttonFn, children: {contentFn: commonText}}))
+        contentFn: headerContainer[0], children:  headerButtons.map(buttonFn => ({contentFn: buttonFn, children: [{contentFn: commonText}]}))
     }));
 
-    // console.log(getAllTagsReworked(getAllTagsReworked(blockContentConfig).filter(containsEachKey(blockContentConfig))));
-    // console.log(getHeaderContent(headerContainer, headerElements));
+
+    for await (let i of [ ...Array(47).keys() ]){
+        for await (let [index, combination] of combinations.entries()){
+            const givenTree = {
+                contentFn: content => `<body> ${content} </body>`,
+                children: [
+                    headers[i % headers.length],
+                    {
+                        contentFn: contentContainer[0],
+                        children:
+                            combination.map(
+                                getCombinationChildren(contentStrong, contentSpan, contentButton)
+                            ).flat()
+                    },
+                ]
+            };
+            const html = generateContent(givenTree);
+            try {
+                await fs.writeFile(`./dataset/html/${i}-${index}.html`, html);
+                console.info(`Successfully written ${i}-${index}`);
+            } catch (error){
+                console.error(error);
+            }
+        }
+
+    }
 };
 
 //Hardcoded stuff that makes people go to hell
@@ -138,4 +178,48 @@ const getHeaderButtons = ([activeButton, inActiveButton]) => [
         [inActiveButton, inActiveButton, inActiveButton, inActiveButton, activeButton],
     ];
 
-main();
+
+//38
+const combinations = [
+    [uno],
+    [dos],
+    [cuatro],
+    [uno,uno],
+    [dos,uno],
+    [cuatro, uno],
+    [uno, dos],
+    [dos, dos],
+    [cuatro, dos],
+    [uno, cuatro],
+    [dos, cuatro],
+    [cuatro, cuatro],
+    [uno, uno, uno],
+    [dos, uno, uno],
+    [cuatro, uno, uno],
+    [uno, dos, uno],
+    [dos, dos, uno],
+    [cuatro, dos, uno],
+    [uno, cuatro, uno],
+    [dos, cuatro, uno],
+    [cuatro, cuatro, uno],
+    [uno, uno, dos],
+    [dos, uno, dos],
+    [cuatro, uno, dos],
+    [uno, dos, dos],
+    [dos, dos, dos],
+    [cuatro, dos, dos],
+    [uno, cuatro, dos],
+    [dos, cuatro, dos],
+    [cuatro, cuatro, dos],
+    [uno, uno, cuatro],
+    [dos, uno, cuatro],
+    [cuatro, uno, cuatro],
+    [uno, dos, cuatro],
+    [dos, dos, cuatro],
+    [cuatro, dos, cuatro],
+    [uno, cuatro, cuatro],
+    [dos, cuatro, cuatro],
+    [cuatro, cuatro, cuatro],
+];
+
+(async ()=>{await main()})();
