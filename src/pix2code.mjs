@@ -37,16 +37,19 @@ const headerElementActiveInactive = {
     ],
 };
 
-
+//box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+//background-image: linear-gradient(to bottom,#f3ba61,#ed9400);
 const contentButtonConfig = {
     button: [{
         'color': ['white'],
-        'background': ['#4dab4c', '#f0a223', '#cf3f37'],
+        'background-image': ['linear-gradient(to bottom, #ee5f5b, #bd362f);', 'linear-gradient(to bottom, #fbb450, #f89406);', 'linear-gradient(to bottom, #62c462, #51a351);'],
         'padding': ['0 20px'],
         'align-self': ['baseline'],
         'border-radius': ['4px'],
+        'border': ['1px solid rgba(0, 0, 0, 0.25)'],
         'height': ['36px'],
         'border': ['none'],
+        'box-shadow': ['inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05)'],
     }],
 };
 const contentStrongConfig = {
@@ -82,7 +85,9 @@ const generetatePixCodeElements = () => ({
     contentSpan: getAllTagsReworked(contentSpanConfig).filter(containsEachKey(contentSpanConfig)),
 });
 
-const commonText = () => randomWords({ min: 1, max: 3, maxLength: 5, join:' ' });
+
+const upper = lower=>lower.replace(/^\w/, c => c.toUpperCase());
+const commonText = (max = 3 ) => upper(randomWords({ min: 1, max, maxLength: 5, join:' ' }));
 
 const getStandarBlock = row =>({
     'background-color': ['#f5f5f5'],
@@ -118,7 +123,7 @@ const getCombinationChildren = (contentStrong, contentSpan, contentButton) => (r
                 contentFn: getAllTagsReworked(config).filter(containsEachKey(config))[0],
                 children: [
                     { contentFn: contentStrong[0], children: [{ contentFn: commonText }] },
-                    { contentFn: contentSpan[0], children: [{ contentFn: commonText }] },
+                    { contentFn: contentSpan[0], children: [{ contentFn: ()=>commonText(7) }] },
                     { contentFn: contentButton[randomButton()], children: [{ contentFn: commonText }] },
                 ]
             })
@@ -133,7 +138,7 @@ const main = async () => {
     }));
 
 
-    for await (let i of [ ...Array(47).keys() ]){
+    for await (let i of [ ...Array(48).keys() ]){
         for await (let [index, combination] of combinations.entries()){
             const givenTree = {
                 contentFn: content => `<body> ${content} </body>`,
