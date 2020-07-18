@@ -5,7 +5,7 @@ import 'mjs-mocha';
 const {assert} = chai.default;
 
 describe('token', () => {
-  it('generateTokens generates list of all posible tokens', () => {
+  it('generateTokens generates list of all possible tokens', () => {
     const tokensConfiguration = {
       div: [{'display': ['flex']}, {'flex-direction': ['row', 'collumn']}],
     };

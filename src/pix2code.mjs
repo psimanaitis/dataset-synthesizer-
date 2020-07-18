@@ -3,7 +3,7 @@ import randomWords from 'random-words';
 import {generateContent} from "./tree2html.mjs";
 import { promises as fs } from 'fs';
 
-const headerContainer = {
+const headerContainerConfig = {
     header: [
         { 'display': ['flex'] },
         { 'flex-direction': ['row'] },
@@ -24,7 +24,7 @@ const headerElementActive = {
 };
 
 
-const headerElementActiveInactive = {
+const headerElementInactive = {
     button: [
         { 'background': ['#333333'] },
         { 'color': ['#2f79b9'] },
@@ -60,7 +60,7 @@ const contentSpanConfig = {
     span: [{'margin': ['5px']}],
 };
 
-const contentContainer = {
+const contentContainerConfig = {
     div: [
         {
             'display': ['grid'],
@@ -77,9 +77,9 @@ const containsEachKey = (config) => (item) =>
         .reduce((acc, currentStyleName) => acc && item(' ').includes(`${currentStyleName}:`), true);
 
 const generetatePixCodeElements = () => ({
-    headerContainer: getAllTagsReworked(headerContainer).filter(containsEachKey(headerContainer)),
-    headerElements: [...getAllTagsReworked(headerElementActive).filter(containsEachKey(headerElementActive)), ...getAllTagsReworked(headerElementActiveInactive).filter(containsEachKey(headerElementActiveInactive))],
-    contentContainer: getAllTagsReworked(contentContainer).filter(containsEachKey(contentContainer)),
+    headerContainer: getAllTagsReworked(headerContainerConfig).filter(containsEachKey(headerContainerConfig)),
+    headerElements: [...getAllTagsReworked(headerElementActive).filter(containsEachKey(headerElementActive)), ...getAllTagsReworked(headerElementInactive).filter(containsEachKey(headerElementInactive))],
+    contentContainer: getAllTagsReworked(contentContainerConfig).filter(containsEachKey(contentContainerConfig)),
     contentButton: getAllTagsReworked(contentButtonConfig).filter(containsEachKey(contentButtonConfig)),
     contentStrong: getAllTagsReworked(contentStrongConfig).filter(containsEachKey(contentStrongConfig)),
     contentSpan: getAllTagsReworked(contentSpanConfig).filter(containsEachKey(contentSpanConfig)),
@@ -163,6 +163,25 @@ const main = async () => {
         }
 
     }
+
+    const tokens = Array.from(new Set([
+        ...getAllTagsReworked(headerContainerConfig).filter(containsEachKey(headerContainerConfig)).map((callback) => callback('')),
+        ...getAllTagsReworked(headerElementActive).filter(containsEachKey(headerElementActive)).map((callback) => callback('')),
+        ...getAllTagsReworked(headerElementInactive).filter(containsEachKey(headerElementInactive)).map((callback) => callback('')),
+        ...getAllTagsReworked(contentButtonConfig).filter(containsEachKey(contentButtonConfig)).map((callback) => callback('')),
+        ...getAllTagsReworked(contentStrongConfig).filter(containsEachKey(contentStrongConfig)).map((callback) => callback('')),
+        ...getAllTagsReworked(contentSpanConfig).filter(containsEachKey(contentSpanConfig)).map((callback) => callback('')),
+        ...getAllTagsReworked({div: [{...getStandarBlock(1), 'grid-column' : ['1/3']}]}).filter(containsEachKey({div: [{...getStandarBlock(1), 'grid-column' : ['1/3']}]})).map((callback) => callback('')),
+        ...getAllTagsReworked({div: [{...getStandarBlock(2), 'grid-column' : ['1/3']}]}).filter(containsEachKey({div: [{...getStandarBlock(2), 'grid-column' : ['1/3']}]})).map((callback) => callback('')),
+        ...getAllTagsReworked({div: [{...getStandarBlock(2), 'grid-column' : ['3/5']}]}).filter(containsEachKey({div: [{...getStandarBlock(2), 'grid-column' : ['3/5']}]})).map((callback) => callback('')),
+        ...getAllTagsReworked({div: [{...getStandarBlock(3), 'grid-column' : ['1/3']}]}).filter(containsEachKey({div: [{...getStandarBlock(3), 'grid-column' : ['1/3']}]})).map((callback) => callback('')),
+        ...getAllTagsReworked({div: [{...getStandarBlock(3), 'grid-column' : ['3/5']}]}).filter(containsEachKey({div: [{...getStandarBlock(3), 'grid-column' : ['3/5']}]})).map((callback) => callback('')),
+        ...getAllTagsReworked({div: [{...getStandarBlock(2)}]}).filter(containsEachKey({div: [{...getStandarBlock(2)}]})).map((callback) => callback('')),
+        ...getAllTagsReworked({div: [{...getStandarBlock(3)}]}).filter(containsEachKey({div: [{...getStandarBlock(3)}]})).map((callback) => callback(''))
+    ]
+        .map(entry => entry.split('>').filter(data=>data).map(data=>`${data}>`)).flat()));
+
+    await fs.writeFile(`./dataset/tokens.json`, JSON.stringify(tokens));
 };
 
 //Hardcoded stuff that makes people go to hell
