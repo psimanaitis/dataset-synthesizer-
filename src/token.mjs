@@ -2,7 +2,7 @@ import bigCartesian from 'big-cartesian';
 
 export const generateTokens = (tokens) =>
   Object.keys(tokens).reduce((acc, key) => {
-    acc.push(`<${key} style="`);
+    acc.push(`<${key} style=" `);
     tokens[key].forEach((item) => {
       const styleNames = Object.keys(item);
       const styleValues = styleNames.map((styleName) => item[styleName].map((value) => `${styleName}:${value};`)).flat();
@@ -10,7 +10,7 @@ export const generateTokens = (tokens) =>
     });
     acc.push(`</${key}>`);
     return acc;
-  }, [`">`]);
+  }, [` ">`]);
 
 export const getAllTagsReworked = (tagsConfig)=> Object.entries(tagsConfig)
     .map((obj)=>({[obj[0]]: obj[1]}))

@@ -4,7 +4,7 @@
   "description": "Synthesizes html dataset.",
   "main": "src/index.mjs",
   "scripts": {
-    "start": "nodemon --experimental-modules src/index.mjs",
+    "start": "node --experimental-modules src/pix2code.mjs",
     "debug": "nodemon —-inspect --experimental-modules src/index.mjs",
     "test": "nodemon mocha --experimental-modules ./src/token.test.mjs"
   },

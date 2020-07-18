@@ -15,7 +15,8 @@ const headerElementActive = {
         { 'background': ['#2f79b9'] },
         { 'color': ['#ffffff'] },
         { 'margin': ['5px'] },
-        { 'padding': ['0 20px'] },
+        { 'padding-right': ['20px'] },
+        { 'padding-left': ['20px'] },
         { 'align-self': ['baseline'] },
         { 'border-radius': ['4px'] },
         { 'height': ['36px'] },
@@ -42,14 +43,15 @@ const headerElementInactive = {
 const contentButtonConfig = {
     button: [{
         'color': ['white'],
-        'background-image': ['linear-gradient(to bottom, #ee5f5b, #bd362f);', 'linear-gradient(to bottom, #fbb450, #f89406);', 'linear-gradient(to bottom, #62c462, #51a351);'],
-        'padding': ['0 20px'],
+        'background-image': ['linear-gradient(#ee5f5b,#bd362f)', 'linear-gradient(#fbb450,#f89406)', 'linear-gradient(#62c462,#51a351)'],
+        'padding-right': ['20px'],
+         'padding-left': ['20px'],
         'align-self': ['baseline'],
         'border-radius': ['4px'],
-        'border': ['1px solid rgba(0, 0, 0, 0.25)'],
+        'border-color': ['rgba(0,0,0,0.25)'],
+        'border-style': ['solid'],
+        'border-width': ['1px'],
         'height': ['36px'],
-        'border': ['none'],
-        'box-shadow': ['inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05)'],
     }],
 };
 const contentStrongConfig = {
@@ -64,9 +66,9 @@ const contentContainerConfig = {
     div: [
         {
             'display': ['grid'],
-            'grid-template-columns': ['repeat(4, 1fr)'],
+            'grid-template-columns': ['repeat(4,1fr)'],
             'gap': ['10px'],
-            'grid-template-rows': ['repeat(3, 120px)'],
+            'grid-template-rows': ['repeat(3,120px)'],
         }],
 };
 
@@ -137,7 +139,7 @@ const main = async () => {
         contentFn: headerContainer[0], children:  headerButtons.map(buttonFn => ({contentFn: buttonFn, children: [{contentFn: commonText}]}))
     }));
 
-
+    await fs.mkdir('./dataset/html/');
     for await (let i of [ ...Array(48).keys() ]){
         for await (let [index, combination] of combinations.entries()){
             const givenTree = {
@@ -179,7 +181,7 @@ const main = async () => {
         ...getAllTagsReworked({div: [{...getStandarBlock(2)}]}).filter(containsEachKey({div: [{...getStandarBlock(2)}]})).map((callback) => callback('')),
         ...getAllTagsReworked({div: [{...getStandarBlock(3)}]}).filter(containsEachKey({div: [{...getStandarBlock(3)}]})).map((callback) => callback(''))
     ]
-        .map(entry => entry.split('>').filter(data=>data).map(data=>`${data}>`)).flat()));
+        .map(entry => entry.split('>').filter(data=>data).map(data=>`${data}>`)).flat().map(entry=> entry.split(' ')).flat( )));
 
     await fs.writeFile(`./dataset/tokens.json`, JSON.stringify(tokens));
 };
