@@ -4,8 +4,8 @@ import { promises as fs } from 'fs';
 export const htmlFilesToImages = async (htmlDirectory, imagesDirectory)=>{
   const dir = await fs.opendir(htmlDirectory);
 
-  await fs.mkdir('./dataset/tokenized/');
-  await fs.mkdir('./dataset/images/');
+  await fs.mkdir('./dataset/tokenized/', { recursive: true });
+  await fs.mkdir('./dataset/images/', { recursive: true });
 
   for await (const dirent of dir) {
     const content = await fs.promises.readFile(`${htmlDirectory}/${dirent.name}`);
@@ -14,6 +14,7 @@ export const htmlFilesToImages = async (htmlDirectory, imagesDirectory)=>{
     await page.setContent(content.toString());
     await page.screenshot({path: `${imagesDirectory}/${dirent.name}.png`});
     await browser.close();
+
     //TODO tokenize html, strip filler texts
     await fs.writeFile(`./dataset/tokenized/${dirent.name}.html`, content.toString());
   }
