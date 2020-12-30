@@ -25,9 +25,7 @@ const main = async () => {
 
     await fs.mkdir('./dataset/html/', { recursive: true });
 
-
-    //why 48 ?
-    for await (let i of [ ...Array(48).keys() ]){
+    for await (let i of [ ...Array(56).keys() ]){
         for await (let [index, combination] of combinations.entries()){
             const givenTree = {
                 contentFn: content => `<body> ${content} </body>`,
@@ -70,7 +68,7 @@ const main = async () => {
     ]
         .map(entry => entry.split('>').filter(data=>data).map(data=>`${data}>`)).flat().map(entry=> entry.split(' ')).flat( )));
 
-    await fs.writeFile(`./dataset/tokens.json`, JSON.stringify(tokens));
+    await fs.writeFile(`./dataset/tokens.json`, JSON.stringify(tokens.filter(token=>token)));
 };
 
 

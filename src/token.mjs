@@ -5,12 +5,12 @@ export const generateTokens = (tokens) =>
     acc.push(`<${key} style=" `);
     tokens[key].forEach((item) => {
       const styleNames = Object.keys(item);
-      const styleValues = styleNames.map((styleName) => item[styleName].map((value) => `${styleName}:${value};`)).flat();
+      const styleValues = styleNames.map((styleName) => item[styleName].map((value) => `${styleName}:${value}; `)).flat();
       acc = [...acc, ...styleValues];
     });
     acc.push(`</${key}>`);
     return acc;
-  }, [` ">`]);
+  }, [``]);
 
 export const getAllTagsReworked = (tagsConfig)=> Object.entries(tagsConfig)
     .map((obj)=>({[obj[0]]: obj[1]}))
