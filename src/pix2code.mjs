@@ -139,7 +139,7 @@ const main = async () => {
         contentFn: headerContainer[0], children:  headerButtons.map(buttonFn => ({contentFn: buttonFn, children: [{contentFn: commonText}]}))
     }));
 
-    await fs.mkdir('./dataset/html/');
+    await fs.mkdir('./dataset/html/', { recursive: true });
     for await (let i of [ ...Array(48).keys() ]){
         for await (let [index, combination] of combinations.entries()){
             const givenTree = {
