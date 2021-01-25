@@ -5,6 +5,7 @@
   "main": "src/index.mjs",
   "scripts": {
     "start": "node --experimental-modules src/pix2code.mjs",
+    "toImage": "node --experimental-modules src/html2png.mjs",
     "debug": "nodemon —-inspect --experimental-modules src/index.mjs",
     "test": "nodemon mocha --experimental-modules ./src/token.test.mjs"
   },
@@ -23,7 +24,8 @@
   "dependencies": {
     "big-cartesian": "^2.0.0",
     "puppeteer": "^2.1.1",
-    "random-words": "^1.1.1"
+    "random-words": "^1.1.1",
+    "sharp": "^0.27.0"
   },
   "engines": {
     "node": ">=15.5.0"

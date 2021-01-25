@@ -65,7 +65,7 @@ export const contentContainerConfig = {
 };
 export const getStandarBlock = row => ({
     'background-color': ['#f5f5f5'],
-    'grid-row': [row],
+    'grid-row': [`${row}`],
     'border-radius': ['4px'],
     'padding': ['5px'],
     'display': ['flex'],

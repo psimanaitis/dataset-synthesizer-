@@ -5,6 +5,7 @@ import {
     contentButtonConfig,
     contentSpanConfig,
     contentStrongConfig,
+    contentContainerConfig,
     generetatePixCodeElements,
     getHeaderButtons,
     getStandarBlock,
@@ -58,11 +59,14 @@ const main = async () => {
         ...getAllTagsReworked(contentButtonConfig).filter(containsEachKey(contentButtonConfig)).map((callback) => callback('')),
         ...getAllTagsReworked(contentStrongConfig).filter(containsEachKey(contentStrongConfig)).map((callback) => callback('')),
         ...getAllTagsReworked(contentSpanConfig).filter(containsEachKey(contentSpanConfig)).map((callback) => callback('')),
+        ...getAllTagsReworked(contentContainerConfig).filter(containsEachKey(contentContainerConfig)).map((callback) => callback('')),
         ...getAllTagsReworked({div: [{...getStandarBlock(1), 'grid-column' : ['1/3']}]}).filter(containsEachKey({div: [{...getStandarBlock(1), 'grid-column' : ['1/3']}]})).map((callback) => callback('')),
         ...getAllTagsReworked({div: [{...getStandarBlock(2), 'grid-column' : ['1/3']}]}).filter(containsEachKey({div: [{...getStandarBlock(2), 'grid-column' : ['1/3']}]})).map((callback) => callback('')),
         ...getAllTagsReworked({div: [{...getStandarBlock(2), 'grid-column' : ['3/5']}]}).filter(containsEachKey({div: [{...getStandarBlock(2), 'grid-column' : ['3/5']}]})).map((callback) => callback('')),
         ...getAllTagsReworked({div: [{...getStandarBlock(3), 'grid-column' : ['1/3']}]}).filter(containsEachKey({div: [{...getStandarBlock(3), 'grid-column' : ['1/3']}]})).map((callback) => callback('')),
         ...getAllTagsReworked({div: [{...getStandarBlock(3), 'grid-column' : ['3/5']}]}).filter(containsEachKey({div: [{...getStandarBlock(3), 'grid-column' : ['3/5']}]})).map((callback) => callback('')),
+        ...getAllTagsReworked({div: [{...getStandarBlock(2)}]}).filter(containsEachKey({div: [{...getStandarBlock(0)}]})).map((callback) => callback('')),
+        ...getAllTagsReworked({div: [{...getStandarBlock(2)}]}).filter(containsEachKey({div: [{...getStandarBlock(1)}]})).map((callback) => callback('')),
         ...getAllTagsReworked({div: [{...getStandarBlock(2)}]}).filter(containsEachKey({div: [{...getStandarBlock(2)}]})).map((callback) => callback('')),
         ...getAllTagsReworked({div: [{...getStandarBlock(3)}]}).filter(containsEachKey({div: [{...getStandarBlock(3)}]})).map((callback) => callback(''))
     ]

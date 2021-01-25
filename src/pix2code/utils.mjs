@@ -6,4 +6,4 @@ export const containsEachKey = (config) => (item) =>
         .flat()
         .reduce((acc, currentStyleName) => acc && item(' ').includes(`${currentStyleName}:`), true);
 const upper = lower => lower.replace(/^\w/, c => c.toUpperCase());
-export const commonText = (max = 3) => upper(randomWords({min: 1, max, maxLength: 5, join: ' '}));
+export const commonText = (max = 3) => `${upper(randomWords({min: 1, max, maxLength: 5, join: ' '}))} `;
