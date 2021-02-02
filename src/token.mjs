@@ -5,7 +5,7 @@ export const generateTokens = (tokens) =>
     acc.push(`<${key} style=" `);
     tokens[key].forEach((item) => {
       const styleNames = Object.keys(item);
-      const styleValues = styleNames.map((styleName) => item[styleName].map((value) => `${styleName}:${value}; `)).flat();
+      const styleValues = styleNames.map((styleName) => item[styleName].map((value) => ` ${styleName} : ${value} ; `)).flat();
       acc = [...acc, ...styleValues];
     });
     acc.push(`</${key}>`);
@@ -27,7 +27,7 @@ const getAllTags = (tokenList)=>{
       .reduce((acc, item)=>({...acc, [item.split(':')[0]]: [...(acc[item.split(':')[0]] ? acc[item.split(':')[0]] : []), item]}), {});
   if (Object.keys(uniqueKeys).length) {
     return Array.from(new Set([...expandWithAll(Object.values(uniqueKeys))].map((items)=>items.join(' '))))
-        .map((stylePart)=> ((content)=>`${openingTag}${stylePart}${closingOpeningPart} ${content} ${clostingTag} `));
+        .map((stylePart)=> ((content)=>`${openingTag} ${stylePart} ${closingOpeningPart} ${content} ${clostingTag} `));
   } else {
     return [(content)=>`${openingTag}${closingOpeningPart} ${content} ${clostingTag} `];
   }

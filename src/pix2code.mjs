@@ -41,7 +41,7 @@ const main = async () => {
                     },
                 ]
             };
-            const html = generateContent(givenTree);
+            const html = `<body> ${generateContent(givenTree).replace(/  +/g, ' ') } </body>`;
             try {
                 await fs.writeFile(`./dataset/html/${i}-${index}.html`, html);
                 console.info(`Successfully written ${i}-${index}`);
@@ -71,8 +71,8 @@ const main = async () => {
         ...getAllTagsReworked({div: [{...getStandarBlock(3)}]}).filter(containsEachKey({div: [{...getStandarBlock(3)}]})).map((callback) => callback(''))
     ]
         .map(entry => entry.split('>').filter(data=>data).map(data=>`${data}>`)).flat().map(entry=> entry.split(' ')).flat( )));
-
-    await fs.writeFile(`./dataset/tokens.json`, JSON.stringify(tokens.filter(token=>token)));
+    const filteredTokens = [ ...tokens.filter(token=>token), '<body>', '</body>']
+    await fs.writeFile(`./dataset/tokens.json`, JSON.stringify(filteredTokens));
 };
 
 
