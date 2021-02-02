@@ -15,6 +15,7 @@ import {
 } from "./pix2code/element.mjs";
 import {combinations, getCombinationChildren} from "./pix2code/combinations.mjs";
 import {commonText, containsEachKey} from "./pix2code/utils.mjs";
+import {shuffleArray} from "./shuffleArray.mjs";
 
 
 const main = async () => {
@@ -26,30 +27,40 @@ const main = async () => {
 
     await fs.mkdir('./dataset/html/', { recursive: true });
 
-    for await (let i of [ ...Array(56).keys() ]){
+    const maxEntries = 1750;
+    let currentCounter = 0;
+    const allEntries = shuffleArray(Array.from(Array(maxEntries).keys()));
+    const trainData = allEntries.slice(0, 1501);
+
+    await fs.mkdir('./test-dataset/html/', { recursive: true });
+    await fs.mkdir('./train-dataset/html/', { recursive: true });
+
+    for await (let i of [ ...Array(47).keys() ]){
         for await (let [index, combination] of combinations.entries()){
-            const givenTree = {
-                contentFn: content => `<body> ${content} </body>`,
-                children: [
-                    headers[i % headers.length],
-                    {
-                        contentFn: contentContainer[0],
-                        children:
-                            combination.map(
-                                getCombinationChildren(contentStrong, contentSpan, contentButton)
-                            ).flat()
-                    },
-                ]
-            };
-            const html = `<body> ${generateContent(givenTree).replace(/  +/g, ' ') } </body>`;
-            try {
-                await fs.writeFile(`./dataset/html/${i}-${index}.html`, html);
-                console.info(`Successfully written ${i}-${index}`);
-            } catch (error){
-                console.error(error);
+            currentCounter += 1;
+            if(currentCounter <= maxEntries){
+                const givenTree = {
+                    contentFn: content => `<body> ${content} </body>`,
+                    children: [
+                        headers[i % headers.length],
+                        {
+                            contentFn: contentContainer[0],
+                            children:
+                                combination.map(
+                                    getCombinationChildren(contentStrong, contentSpan, contentButton)
+                                ).flat()
+                        },
+                    ]
+                };
+                const html = `<body> ${generateContent(givenTree).replace(/  +/g, ' ') } </body>`;
+                try {
+                    await fs.writeFile(`./${trainData.includes(currentCounter) ? 'train-' : 'test-'}dataset/html/${i}-${index}.html`, html);
+                    console.info(`Successfully written ${i}-${index}`);
+                } catch (error){
+                    console.error(error);
+                }
             }
         }
-
     }
 
     const tokens = Array.from(new Set([
