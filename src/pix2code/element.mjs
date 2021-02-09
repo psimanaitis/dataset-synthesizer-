@@ -5,6 +5,7 @@ export const headerContainerConfig = {
     header: [
         {'display': ['flex']},
         {'flex-direction': ['row']},
+        {'margin': ['15px 0']}
     ],
 };
 export const headerElementActive = {
@@ -16,7 +17,8 @@ export const headerElementActive = {
         {'padding-left': ['20px']},
         {'align-self': ['baseline']},
         {'border-radius': ['4px']},
-        {'height': ['36px']},
+        {'font-size': ['14px']},
+        {'height': ['40px']},
         {'border': ['none']},
     ],
 };
@@ -28,7 +30,8 @@ export const headerElementInactive = {
         {'padding': ['0 20px']},
         {'align-self': ['baseline']},
         {'border-radius': ['4px']},
-        {'height': ['36px']},
+        {'height': ['40px']},
+        {'font-size': ['14px']},
         {'border': ['none']},
     ],
 };
@@ -45,11 +48,18 @@ export const contentButtonConfig = {
         'border-color': ['rgba(0,0,0,0.25)'],
         'border-style': ['solid'],
         'border-width': ['1px'],
-        'height': ['36px'],
+        'height': ['34px'],
+        'font-size': ['14px'],
+        'text-shadow': ['0 -1px 0 rgba(0,0,0,0.2)'],
+        'box-shadow': ['inset 0 1px 0 rgba(255,255,255,0.15), 0 1px 1px rgba(0,0,0,0.08)'],
     }],
 };
 export const contentStrongConfig = {
-    strong: [{'margin': ['5px']}],
+    h4: [{
+        'margin': ['5px'],
+        'font-size': ['18px'],
+        'font-weight': ['500'],
+    }],
 };
 export const contentSpanConfig = {
     span: [{'margin': ['5px']}],
@@ -59,15 +69,15 @@ export const contentContainerConfig = {
         {
             'display': ['grid'],
             'grid-template-columns': ['repeat(4,1fr)'],
-            'gap': ['10px'],
-            'grid-template-rows': ['repeat(3,120px)'],
+            'gap': ['20px'],
+            'grid-template-rows': ['repeat(3,140px)'],
         }],
 };
 export const getStandarBlock = row => ({
     'background-color': ['#f5f5f5'],
     'grid-row': [`${row}`],
     'border-radius': ['4px'],
-    'padding': ['5px'],
+    'padding': ['20px'],
     'display': ['flex'],
     'flex-direction': ['column'],
     'justify-content': ['space-around'],

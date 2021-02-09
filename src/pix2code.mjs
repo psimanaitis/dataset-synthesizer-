@@ -21,7 +21,7 @@ import {shuffleArray} from "./shuffleArray.mjs";
 const main = async () => {
     const { headerContainer, headerElements, contentContainer, contentButton, contentStrong, contentSpan } = generetatePixCodeElements();
 
-    const headers = getHeaderButtons(headerElements).map(headerButtons=>({
+    const headers = getHeaderButtons([headerElements[1], headerElements[3]]).map(headerButtons=>({
         contentFn: headerContainer[0], children:  headerButtons.map(buttonFn => ({contentFn: buttonFn, children: [{contentFn: commonText}]}))
     }));
 
@@ -40,7 +40,7 @@ const main = async () => {
             currentCounter += 1;
             if(currentCounter <= maxEntries){
                 const givenTree = {
-                    contentFn: content => `<body> ${content} </body>`,
+                    contentFn: content => `<main style="width: 1170px; margin: auto"> ${content} </main>`,
                     children: [
                         headers[i % headers.length],
                         {

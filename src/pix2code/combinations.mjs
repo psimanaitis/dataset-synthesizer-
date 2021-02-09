@@ -63,7 +63,7 @@ export const getCombinationChildren = (contentStrong, contentSpan, contentButton
             contentFn: getAllTagsReworked(config).filter(containsEachKey(config))[0],
             children: [
                 {contentFn: contentStrong[0], children: [{contentFn: commonText}]},
-                {contentFn: contentSpan[0], children: [{contentFn: () => commonText(7)}]},
+                {contentFn: contentSpan[0], children: [{contentFn: () => commonText(6)}]},
                 {contentFn: contentButton[randomButton()], children: [{contentFn: commonText}]},
             ]
         })
