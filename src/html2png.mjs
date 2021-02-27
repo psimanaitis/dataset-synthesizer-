@@ -12,10 +12,12 @@ export const htmlFilesToImages = async (dsDirectory)=>{
   const html = [];
   for await (const dirent of dir) {
     const content = await fs.readFile(`./${dsDirectory}-dataset/html/${dirent.name}`);
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: [`--window-size=1920,1080`]
+    });
     const page = await browser.newPage();
     await page.setContent(content.toString());
-    await page.screenshot({path: `./dataset/images/${dirent.name}.png`});
+    await page.screenshot({path: `./dataset/images/${dirent.name}.png`,  fullScreen: true, fullPage: true});
     await browser.close();
 
     await sharp(`dataset/images/${dirent.name}.png`)

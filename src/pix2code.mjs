@@ -40,7 +40,7 @@ const main = async () => {
             currentCounter += 1;
             if(currentCounter <= maxEntries){
                 const givenTree = {
-                    contentFn: content => `<main style="width: 1170px; margin: auto"> ${content} </main>`,
+                    contentFn: content => content,
                     children: [
                         headers[i % headers.length],
                         {
