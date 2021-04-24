@@ -27,18 +27,17 @@ const main = async () => {
 
     await fs.mkdir('./dataset/html/', { recursive: true });
 
-    const maxEntries = 1750;
+    const maxEntries = 2000;
     let currentCounter = 0;
     const allEntries = shuffleArray(Array.from(Array(maxEntries).keys()));
-    const trainData = allEntries.slice(0, 1501);
+    const trainData = allEntries.slice(0, 1750);
 
     await fs.mkdir('./test-dataset/html/', { recursive: true });
     await fs.mkdir('./train-dataset/html/', { recursive: true });
 
-    for await (let i of [ ...Array(47).keys() ]){
+    for await (let i of [ ...Array(54).keys() ]){
         for await (let [index, combination] of combinations.entries()){
-            currentCounter += 1;
-            if(currentCounter <= maxEntries){
+            if(currentCounter < maxEntries){
                 const givenTree = {
                     contentFn: content => content,
                     children: [
@@ -60,6 +59,7 @@ const main = async () => {
                     console.error(error);
                 }
             }
+            currentCounter += 1;
         }
     }
 

@@ -5,8 +5,9 @@ import sharp from "sharp";
 
 export const htmlFilesToImages = async (dsDirectory)=>{
   const dir = await fs.opendir(`./${dsDirectory}-dataset/html`);
+  const tokensFileContent = await fs.readFile(`./dataset/tokens.json`)
+  const tokens = JSON.parse(tokensFileContent);
 
-  await fs.mkdir(`./dataset/tokenized/`, { recursive: true });
   await fs.mkdir(`./dataset/images/`, { recursive: true });
   await fs.mkdir(`./dataset/resized/`, { recursive: true });
   const html = [];
@@ -21,11 +22,25 @@ export const htmlFilesToImages = async (dsDirectory)=>{
     await browser.close();
 
     await sharp(`dataset/images/${dirent.name}.png`)
-          .resize(299,299, {fit : 'fill'})
+          .resize(300,300, {fit : 'fill'})
           .toFormat('jpeg')
           .toFile(`dataset/resized/${dirent.name}.jpeg`);
 
-    html.push({id: dirent.name, content: content.toString()})
+    const tokenizedContent = content.toString().split(' ')
+        .map(token => tokens.includes(token) ? token : 'unknown' )
+        .reduce((acc, entry, index)=>{
+          if(index === 0){
+            return [entry]
+          }
+
+          if(acc[acc.length-1] === entry){
+            return acc;
+          }
+          return [...acc, entry]
+        }, [])
+        .join(' ')
+
+    html.push({id: dirent.name, content: tokenizedContent})
   }
 
   await fs.writeFile(`./dataset/${dsDirectory}-html.json`, JSON.stringify(html));

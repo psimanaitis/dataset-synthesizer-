@@ -50,8 +50,6 @@ export const contentButtonConfig = {
         'border-width': ['1px'],
         'min-height': ['34px'],
         'font-size': ['14px'],
-        'text-shadow': ['0 -1px 0 rgba(0,0,0,0.2)'],
-        'box-shadow': ['inset 0 1px 0 rgba(255,255,255,0.15), 0 1px 1px rgba(0,0,0,0.08)'],
     }],
 };
 export const contentStrongConfig = {
