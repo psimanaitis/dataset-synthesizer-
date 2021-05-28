@@ -22,12 +22,12 @@ export const htmlFilesToImages = async (dsDirectory)=>{
     await browser.close();
 
     await sharp(`dataset/images/${dirent.name}.png`)
-          .resize(300,300, {fit : 'fill'})
+          .resize(224,224, {fit : 'fill'})
           .toFormat('jpeg')
           .toFile(`dataset/resized/${dirent.name}.jpeg`);
 
     const tokenizedContent = content.toString().split(' ')
-        .map(token => tokens.includes(token) ? token : 'unknown' )
+        .map(token => tokens.includes(token) ? token : ' ' )
         .reduce((acc, entry, index)=>{
           if(index === 0){
             return [entry]

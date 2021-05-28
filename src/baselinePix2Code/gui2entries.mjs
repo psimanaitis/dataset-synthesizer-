@@ -34,13 +34,13 @@ export const pixToDataset = async (guiDirectory)=>{
             const content = await fs.readFile(`${guiDirectory}/${dirEntry}`);
 
             if(trainData.includes(currentCounter)){
-                trainSamples.push({id: dirEntry, content: content.toString()})
+                trainSamples.push({id: dirEntry, content: content.toString().split(',').join('')});
             }else{
-                testSamples.push({id: dirEntry, content: content.toString()})
+                testSamples.push({id: dirEntry, content: content.toString().split(',').join('')});
             }
 
             await sharp(`${guiDirectory}/${dirEntry.replace('.gui', '.png')}`)
-                .resize(299,299, {fit : 'fill'})
+                .resize(224,224, {fit : 'fill'})
                 .toFormat('jpeg')
                 .toFile(`./pix2code/resized/${dirEntry.replace('.png', '')}.jpeg`);
     }
@@ -52,6 +52,7 @@ export const pixToDataset = async (guiDirectory)=>{
                     .replace(/\n/g, ' ')
                     .replace('/{/g', ' { ')
                     .replace('/}/g', ' } ')
+                    .split(',').join('')
                     .replace(/  +/g, ' ')
             }
         )
@@ -64,6 +65,7 @@ export const pixToDataset = async (guiDirectory)=>{
             .replace(/\n/g, ' ')
             .replace('/{/g', ' { ')
             .replace('/}/g', ' } ')
+                .split(',').join('')
             .replace(/  +/g, ' ')
         }
         )

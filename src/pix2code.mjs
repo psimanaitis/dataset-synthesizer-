@@ -27,10 +27,10 @@ const main = async () => {
 
     await fs.mkdir('./dataset/html/', { recursive: true });
 
-    const maxEntries = 2000;
+    const maxEntries = 1750;
     let currentCounter = 0;
     const allEntries = shuffleArray(Array.from(Array(maxEntries).keys()));
-    const trainData = allEntries.slice(0, 1750);
+    const trainData = allEntries.slice(0, 1500);
 
     await fs.mkdir('./test-dataset/html/', { recursive: true });
     await fs.mkdir('./train-dataset/html/', { recursive: true });
@@ -51,7 +51,7 @@ const main = async () => {
                         },
                     ]
                 };
-                const html = `<body> ${generateContent(givenTree).replace(/  +/g, ' ') } </body>`;
+                const html = `${generateContent(givenTree).replace(/  +/g, ' ') }`;
                 try {
                     await fs.writeFile(`./${trainData.includes(currentCounter) ? 'train-' : 'test-'}dataset/html/${i}-${index}.html`, html);
                     console.info(`Successfully written ${i}-${index}`);
@@ -81,8 +81,8 @@ const main = async () => {
         ...getAllTagsReworked({div: [{...getStandarBlock(2)}]}).filter(containsEachKey({div: [{...getStandarBlock(2)}]})).map((callback) => callback('')),
         ...getAllTagsReworked({div: [{...getStandarBlock(3)}]}).filter(containsEachKey({div: [{...getStandarBlock(3)}]})).map((callback) => callback(''))
     ]
-        .map(entry => entry.split('>').filter(data=>data).map(data=>`${data}>`)).flat().map(entry=> entry.split(' ')).flat( )));
-    const filteredTokens = [ ...tokens.filter(token=>token), '<body>', '</body>']
+        .map(entry => entry.split('">').filter(data=>data).map(data=>`${data}">`)).flat().map(entry=> entry.split(' ')).flat( )));
+    const filteredTokens = [ ...tokens.filter(token=>token && token != '>')]
     await fs.writeFile(`./dataset/tokens.json`, JSON.stringify(filteredTokens));
 };
 
