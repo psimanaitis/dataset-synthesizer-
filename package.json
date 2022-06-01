@@ -26,7 +26,7 @@
     "big-cartesian": "^2.0.0",
     "puppeteer": "^2.1.1",
     "random-words": "^1.1.1",
-    "sharp": "^0.27.0"
+    "sharp": "^0.30.5"
   },
   "engines": {
     "node": ">=15.5.0"
