@@ -19,13 +19,13 @@
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-node": "^11.0.0",
     "mjs-mocha": "^3.0.0",
-    "mocha": "^7.0.0-esm1",
+    "mocha": "^10.2.0",
     "nodemon": "^2.0.2"
   },
   "dependencies": {
     "big-cartesian": "^2.0.0",
     "puppeteer": "^2.1.1",
-    "random-words": "^1.1.1",
+    "random-words": "^1.2.0",
     "sharp": "^0.27.0"
   },
   "engines": {
